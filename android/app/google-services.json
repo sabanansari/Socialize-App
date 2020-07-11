@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "824426627172-tqgin26150peh978tkcqaah76anapa1g.apps.googleusercontent.com",
+          "client_id": "824426627172-2v3bjmh66lhem3jked96mpj6hfgqbn4a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "co.ansari.socialize_app",
-            "certificate_hash": "e8a9b1681bdebddd716a70569a1ef0c7a5efbf89"
+            "certificate_hash": "7034e7ef33f6a68e0913000475def51656c1e88e"
           }
         },
         {
