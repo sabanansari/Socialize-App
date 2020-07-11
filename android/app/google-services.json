@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "824426627172",
+    "firebase_url": "https://socialize-1cf42.firebaseio.com",
+    "project_id": "socialize-1cf42",
+    "storage_bucket": "socialize-1cf42.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824426627172:android:6899f156ed5413a30c9f71",
+        "android_client_info": {
+          "package_name": "co.ansari.socialize_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824426627172-tqgin26150peh978tkcqaah76anapa1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.ansari.socialize_app",
+            "certificate_hash": "e8a9b1681bdebddd716a70569a1ef0c7a5efbf89"
+          }
+        },
+        {
+          "client_id": "824426627172-r76s7drmpo7vakmsm87psdjlp1our68c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc74kHQc_TCOjfYQCxklT81OXhZRrhMvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824426627172-r76s7drmpo7vakmsm87psdjlp1our68c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

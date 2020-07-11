@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
                 height: 60.0,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                  image: AssetImage('images/gbutton.jpg'),
+                  image: AssetImage('images/google_signin_button.png'),
                   fit: BoxFit.cover,
                 )),
               ),
