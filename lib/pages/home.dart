@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,8 +7,13 @@ import 'package:socialize_app/pages/profile.dart';
 import 'package:socialize_app/pages/upload.dart';
 import 'timeline.dart';
 import 'search.dart';
+import 'create_account.dart';
+import 'package:socialize_app/models/user.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
+final usersRef = Firestore.instance.collection('users');
+final DateTime timeStamp = DateTime.now();
+User currentUser;
 
 class Home extends StatefulWidget {
   @override
@@ -20,14 +26,22 @@ class _HomeState extends State<Home> {
   int pageIndex = 0;
 
   onTap(int pageIndex) {
-    pageController.jumpToPage(pageIndex);
+    pageController.animateToPage(pageIndex,
+        duration: Duration(
+          milliseconds: 200,
+        ),
+        curve: Curves.easeInExpo);
   }
 
   Scaffold buildAuthScreen() {
     return Scaffold(
       body: PageView(
         children: <Widget>[
-          TimeLine(),
+//          TimeLine(),
+          RaisedButton(
+            child: Text('Logout'),
+            onPressed: logout,
+          ),
           ActivityFeed(),
           Upload(),
           Search(),
@@ -120,7 +134,7 @@ class _HomeState extends State<Home> {
       setState(() {
         isAuth = true;
       });
-      print('user signed in : $account');
+      createUserInFirestore();
     } else {
       setState(() {
         isAuth = false;
@@ -140,6 +154,32 @@ class _HomeState extends State<Home> {
     setState(() {
       this.pageIndex = pageIndex;
     });
+  }
+
+  createUserInFirestore() async {
+    //1) check if user exists in users collection in database(according to their id)
+    final GoogleSignInAccount user = googleSignIn.currentUser;
+    final DocumentSnapshot doc = await usersRef.document(user.id).get();
+
+    //2)if the user doesn't exist, then we want to take them to the create account page
+
+    if (!doc.exists) {
+      final username =
+          await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return CreateAccount();
+      }));
+      //3) get username from create account, use it to make new user document in users collection
+      usersRef.document(user.id).setData({
+        'id': user.id,
+        'username': username,
+        'photoUrl': user.photoUrl,
+        'email': user.email,
+        'displayName': user.displayName,
+        'bio': '',
+        'timestamp': timeStamp
+      });
+    }
+    currentUser = User.fromDocument(doc);
   }
 
   @override
