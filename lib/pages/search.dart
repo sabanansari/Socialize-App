@@ -117,31 +117,33 @@ class UserResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).primaryColor.withOpacity(0.6),
-      child: Column(
-        children: <Widget>[
-          GestureDetector(
-            onTap: () => print(''),
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundImage: CachedNetworkImageProvider(user.photoUrl),
-                backgroundColor: Colors.grey,
+    return Flexible(
+      child: Container(
+        color: Colors.deepPurple.withOpacity(0.6),
+        child: Column(
+          children: <Widget>[
+            GestureDetector(
+              onTap: () => print(''),
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(user.photoUrl),
+                  backgroundColor: Colors.grey,
+                ),
+                title: Text(
+                  user.displayName,
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                subtitle:
+                    Text(user.username, style: TextStyle(color: Colors.white)),
               ),
-              title: Text(
-                user.displayName,
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              subtitle:
-                  Text(user.username, style: TextStyle(color: Colors.white)),
             ),
-          ),
-          Divider(
-            height: 2.0,
-            color: Colors.white54,
-          ),
-        ],
+            Divider(
+              height: 2.0,
+              color: Colors.white54,
+            ),
+          ],
+        ),
       ),
     );
   }
