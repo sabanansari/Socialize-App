@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +17,11 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = false;
   User user;
+  bool _displayNameValid = true;
+  bool _bioValid = true;
   TextEditingController displayNameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
   @override
@@ -55,6 +60,7 @@ class _EditProfileState extends State<EditProfile> {
         TextField(
           controller: displayNameController,
           decoration: InputDecoration(
+            errorText: _displayNameValid ? null : 'Display Name too short',
             hintText: 'Update Display Name',
           ),
         )
@@ -78,6 +84,7 @@ class _EditProfileState extends State<EditProfile> {
         TextField(
           controller: displayNameController,
           decoration: InputDecoration(
+            errorText: _bioValid ? null : 'Bio too long',
             hintText: 'Update Bio',
           ),
         )
@@ -85,9 +92,38 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
+  updateProfileData() {
+    setState(() {
+      displayNameController.text.trim().length < 3 ||
+              displayNameController.text.isEmpty
+          ? _displayNameValid = false
+          : _displayNameValid = true;
+
+      bioController.text.trim().length > 200
+          ? _bioValid = false
+          : _bioValid = true;
+    });
+    if (_displayNameValid && _bioValid) {
+      usersRef.document(widget.currentUserId).updateData({
+        'displayName': displayNameController.text,
+        'bio': bioController.text,
+      });
+      SnackBar snackbar = SnackBar(
+        content: Text('Profile updated!'),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackbar);
+    }
+  }
+
+  logout() async {
+    await googleSignIn.signOut();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
@@ -129,7 +165,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     RaisedButton(
-                      onPressed: () => print(''),
+                      onPressed: updateProfileData,
                       child: Text(
                         'Update Profile',
                         style: TextStyle(
@@ -142,7 +178,7 @@ class _EditProfileState extends State<EditProfile> {
                     Padding(
                       padding: EdgeInsets.all(16.0),
                       child: FlatButton.icon(
-                        onPressed: () => print('logout'),
+                        onPressed: logout,
                         icon: Icon(Icons.cancel, color: Colors.red),
                         label: Text(
                           'Logout',
