@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:socialize_app/models/user.dart';
+import 'package:socialize_app/pages/comments.dart';
 import 'package:socialize_app/pages/home.dart';
 import 'package:socialize_app/widgets/progress.dart';
 import 'custom_image.dart';
@@ -128,30 +129,31 @@ class _PostState extends State<Post> {
     bool _isLiked = likes[currentUserId] == true;
 
     if (_isLiked) {
-      postRef
-          .document(ownerId)
-          .collection('userPosts')
-          .document(postId)
-          .updateData({'likes.$currentUserId': false});
-
       setState(() {
         likeCount -= 1;
         isLiked = false;
         likes[currentUserId] == false;
       });
-    } else if (!_isLiked) {
+
       postRef
           .document(ownerId)
           .collection('userPosts')
           .document(postId)
-          .updateData({'likes.$currentUserId': true});
-
+          .updateData({'likes.$currentUserId': false});
+    } else if (!_isLiked) {
       setState(() {
         likeCount += 1;
         isLiked = true;
         likes[currentUserId] == true;
         showHeart = true;
       });
+
+      postRef
+          .document(ownerId)
+          .collection('userPosts')
+          .document(postId)
+          .updateData({'likes.$currentUserId': true});
+
       Timer(Duration(milliseconds: 500), () {
         setState(() {
           showHeart = false;
@@ -209,6 +211,12 @@ class _PostState extends State<Post> {
               padding: EdgeInsets.only(right: 20.0),
             ),
             GestureDetector(
+              onTap: () => showComments(
+                context,
+                postId: postId,
+                ownerId: ownerId,
+                mediaUrl: mediaUrl,
+              ),
               child: Icon(
                 Icons.chat,
                 color: Colors.blue[900],
@@ -265,4 +273,15 @@ class _PostState extends State<Post> {
       ],
     );
   }
+}
+
+showComments(BuildContext context,
+    {String postId, String ownerId, String mediaUrl}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) {
+      return Comments(
+          postId: postId, postOwnerId: ownerId, postMediaUrl: mediaUrl);
+    }),
+  );
 }
