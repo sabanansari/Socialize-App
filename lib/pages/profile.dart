@@ -7,6 +7,7 @@ import 'package:socialize_app/pages/home.dart';
 import 'package:socialize_app/widgets/header.dart';
 import 'package:socialize_app/widgets/post.dart';
 import 'package:socialize_app/widgets/progress.dart';
+import 'package:socialize_app/widgets/post_tile.dart';
 
 class Profile extends StatefulWidget {
   final String profileId;
@@ -172,8 +173,21 @@ class _ProfileState extends State<Profile> {
     if (isLoading) {
       return circularProgress();
     }
-    return Column(
-      children: posts,
+//    return Column(
+//      children: posts,
+//    );
+    List<GridTile> gridTiles = [];
+    posts.forEach((post) {
+      gridTiles.add(GridTile(child: PostTile(post)));
+    });
+    return GridView.count(
+      crossAxisCount: 3,
+      childAspectRatio: 1.0,
+      mainAxisSpacing: 1.5,
+      crossAxisSpacing: 1.5,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: gridTiles,
     );
   }
 

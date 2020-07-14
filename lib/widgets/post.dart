@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:socialize_app/models/user.dart';
 import 'package:socialize_app/pages/home.dart';
 import 'package:socialize_app/widgets/progress.dart';
+import 'custom_image.dart';
 
 class Post extends StatefulWidget {
   final String postId;
@@ -122,7 +123,7 @@ class _PostState extends State<Post> {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          Image.network(mediaUrl),
+          cachedNetworkImage(mediaUrl),
         ],
       ),
     );
