@@ -82,7 +82,7 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ),
         TextField(
-          controller: displayNameController,
+          controller: bioController,
           decoration: InputDecoration(
             errorText: _bioValid ? null : 'Bio too long',
             hintText: 'Update Bio',
