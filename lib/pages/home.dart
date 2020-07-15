@@ -14,6 +14,7 @@ import 'package:socialize_app/models/user.dart';
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final StorageReference storageRef = FirebaseStorage.instance.ref();
 final commentsRef = Firestore.instance.collection('comments');
+final activityFeedRef = Firestore.instance.collection('feed');
 final postRef = Firestore.instance.collection('posts');
 final usersRef = Firestore.instance.collection('users');
 final DateTime timeStamp = DateTime.now();

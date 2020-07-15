@@ -199,7 +199,7 @@ class _ProfileState extends State<Profile> {
     } else if (postOrientation == 'grid') {
       List<GridTile> gridTiles = [];
       posts.forEach((post) {
-        gridTiles.add(GridTile(child: PostTile(post)));
+        gridTiles.add(GridTile(child: PostTile(post: post)));
       });
       return GridView.count(
         crossAxisCount: 3,
