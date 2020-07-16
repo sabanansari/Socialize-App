@@ -10,10 +10,11 @@ Container circularProgress() {
   );
 }
 
-Container linearProgress() {
+linearProgress() {
   return Container(
     padding: EdgeInsets.only(bottom: 10.0),
     child: LinearProgressIndicator(
-        valueColor: AlwaysStoppedAnimation(Colors.purple)),
+      valueColor: AlwaysStoppedAnimation(Colors.purple),
+    ),
   );
 }

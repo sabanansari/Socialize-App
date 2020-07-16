@@ -88,6 +88,8 @@ class _ProfileState extends State<Profile> {
           function: editProfile,
         ),
       );
+    } else {
+      return Text('Follow');
     }
   }
 

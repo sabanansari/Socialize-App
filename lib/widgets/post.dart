@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:socialize_app/models/user.dart';
+import 'package:socialize_app/pages/activity_feed.dart';
 import 'package:socialize_app/pages/comments.dart';
 import 'package:socialize_app/pages/home.dart';
 import 'package:socialize_app/widgets/progress.dart';
@@ -30,6 +31,8 @@ class Post extends StatefulWidget {
     this.mediaUrl,
     this.likes,
   });
+
+
 
   factory Post.fromDocument(DocumentSnapshot doc) {
     return Post(
@@ -58,6 +61,7 @@ class Post extends StatefulWidget {
     });
     return count;
   }
+
 
   @override
   _PostState createState() => _PostState(
@@ -109,7 +113,7 @@ class _PostState extends State<Post> {
             backgroundColor: Colors.grey,
           ),
           title: GestureDetector(
-            onTap: () => print(''),
+            onTap: () => showProfile(context, profileId: user.id),
             child: Text(
               user.username,
               style:

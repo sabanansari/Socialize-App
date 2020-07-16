@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:socialize_app/models/user.dart';
+import 'package:socialize_app/pages/activity_feed.dart';
 import 'package:socialize_app/pages/home.dart';
 import 'package:socialize_app/widgets/progress.dart';
 
@@ -18,7 +19,7 @@ class _SearchState extends State<Search> {
 
   handleSearch(String query) {
     Future<QuerySnapshot> users = usersRef
-        .where('displayName', isGreaterThanOrEqualTo: query)
+        .where('username', isGreaterThanOrEqualTo: query)
         .getDocuments();
 
     setState(() {
@@ -117,33 +118,32 @@ class UserResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-        color: Colors.deepPurple.withOpacity(0.6),
-        child: Column(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () => print(''),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(user.photoUrl),
-                  backgroundColor: Colors.grey,
-                ),
-                title: Text(
-                  user.displayName,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                subtitle:
-                    Text(user.username, style: TextStyle(color: Colors.white)),
+    return Container(
+      color: Colors.deepPurple,
+      child: Column(
+        children: <Widget>[
+          GestureDetector(
+            onTap: () => showProfile(context, profileId: user.id),
+//            : showProfile(context, profileId: user.id),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(user.photoUrl),
+                backgroundColor: Colors.grey,
               ),
+              title: Text(
+                user.displayName,
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              subtitle:
+                  Text(user.username, style: TextStyle(color: Colors.white)),
             ),
-            Divider(
-              height: 2.0,
-              color: Colors.white54,
-            ),
-          ],
-        ),
+          ),
+          Divider(
+            height: 2.0,
+            color: Colors.white54,
+          ),
+        ],
       ),
     );
   }

@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:socialize_app/models/navigate.dart';
 import 'package:socialize_app/pages/home.dart';
+import 'package:socialize_app/pages/post_screen.dart';
+import 'package:socialize_app/pages/profile.dart';
 import 'package:socialize_app/widgets/header.dart';
 import 'package:socialize_app/widgets/progress.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -24,6 +27,12 @@ class _ActivityFeedState extends State<ActivityFeed> {
       feedItems.add(ActivityFeedItem.fromDocument(doc));
     });
     return feedItems;
+  }
+
+  @override
+  void initState() {
+    getActivityFeed();
+    super.initState();
   }
 
   @override
@@ -85,28 +94,7 @@ class ActivityFeedItem extends StatelessWidget {
     );
   }
 
-  configureMediaPreview() {
-    if (type == 'like' || type == 'comment') {
-      mediaPreview = GestureDetector(
-        onTap: () => print('showing post'),
-        child: Container(
-          height: 50.0,
-          width: 50.0,
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                fit: BoxFit.cover,
-                image: CachedNetworkImageProvider(mediaUrl),
-              )),
-            ),
-          ),
-        ),
-      );
-    } else {
-      mediaPreview = Text('');
-    }
+  configureMediaPreview(context) {
     if (type == 'like') {
       activityItemText = 'liked your post';
     } else if (type == 'follow') {
@@ -116,18 +104,49 @@ class ActivityFeedItem extends StatelessWidget {
     } else {
       activityItemText = 'Error: Unknown type $type ';
     }
+    if (type == 'like' || type == 'comment') {
+      mediaPreview = Container(
+        height: 50.0,
+        width: 50.0,
+        child: AspectRatio(
+          aspectRatio: 16 / 9,
+          child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              fit: BoxFit.cover,
+              image: CachedNetworkImageProvider(mediaUrl),
+            )),
+          ),
+        ),
+      );
+    } else {
+      mediaPreview = Text('');
+    }
+  }
+
+  showPost(context) {
+    Future.delayed(Duration.zero, () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PostScreen(
+              postId: postId,
+              userId: userId,
+            ),
+          ));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    configureMediaPreview();
+    configureMediaPreview(context);
     return Padding(
       padding: EdgeInsets.only(bottom: 2.0),
       child: Container(
         color: Colors.white54,
         child: ListTile(
           title: GestureDetector(
-            onTap: () => print('show profile'),
+            onTap: () => showProfile(context, profileId: userId),
             child: RichText(
               overflow: TextOverflow.ellipsis,
               text: TextSpan(
@@ -143,7 +162,7 @@ class ActivityFeedItem extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '$activityItemText',
+                      text: ' $activityItemText',
                     )
                   ]),
             ),
@@ -155,9 +174,22 @@ class ActivityFeedItem extends StatelessWidget {
             timeago.format(timestamp.toDate()),
             overflow: TextOverflow.ellipsis,
           ),
-          trailing: mediaPreview,
+          trailing: GestureDetector(
+              onTap: () => print('i am pressed'), child: mediaPreview),
         ),
       ),
     );
   }
+}
+
+showProfile(BuildContext context, {String profileId}) {
+  Future.delayed(Duration.zero, () {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Profile(
+            profileId: profileId,
+          ),
+        ));
+  });
 }
