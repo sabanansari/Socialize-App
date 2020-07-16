@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:socialize_app/models/navigate.dart';
 import 'package:socialize_app/pages/home.dart';
 import 'package:socialize_app/pages/post_screen.dart';
 import 'package:socialize_app/pages/profile.dart';
@@ -124,17 +123,25 @@ class ActivityFeedItem extends StatelessWidget {
     }
   }
 
-  showPost(context) {
-    Future.delayed(Duration.zero, () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PostScreen(
-              postId: postId,
-              userId: userId,
-            ),
-          ));
-    });
+  showPost(context) async {
+    DocumentSnapshot doc = await postRef
+        .document(userId)
+        .collection('userPosts')
+        .document(postId)
+        .get();
+
+    if (doc.exists) {
+      Future.delayed(Duration.zero, () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PostScreen(
+                postId: postId,
+                userId: userId,
+              ),
+            ));
+      });
+    }
   }
 
   @override
@@ -175,7 +182,7 @@ class ActivityFeedItem extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           trailing: GestureDetector(
-              onTap: () => print('i am pressed'), child: mediaPreview),
+              onTap: () => showPost(context), child: mediaPreview),
         ),
       ),
     );

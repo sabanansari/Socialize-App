@@ -12,6 +12,8 @@ import 'create_account.dart';
 import 'package:socialize_app/models/user.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
+final followersRef = Firestore.instance.collection('followers');
+final followingRef = Firestore.instance.collection('following');
 final StorageReference storageRef = FirebaseStorage.instance.ref();
 final commentsRef = Firestore.instance.collection('comments');
 final activityFeedRef = Firestore.instance.collection('feed');
