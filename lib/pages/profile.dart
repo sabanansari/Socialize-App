@@ -384,18 +384,21 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: header(context, titleText: 'Profile'),
-      body: ListView(
-        children: <Widget>[
-          buildProfileHeader(),
-          Divider(),
-          buildTogglePostOrientation(),
-          Divider(
-            height: 0.0,
-          ),
-          buildProfilePosts(),
-        ],
+    return RefreshIndicator(
+      onRefresh: () => buildProfilePosts(),
+      child: Scaffold(
+        appBar: header(context, titleText: 'Profile'),
+        body: ListView(
+          children: <Widget>[
+            buildProfileHeader(),
+            Divider(),
+            buildTogglePostOrientation(),
+            Divider(
+              height: 0.0,
+            ),
+            buildProfilePosts(),
+          ],
+        ),
       ),
     );
   }

@@ -133,12 +133,12 @@ class _HomeState extends State<Home> {
     });
   }
 
-  handleSignIn(GoogleSignInAccount account) {
+  handleSignIn(GoogleSignInAccount account) async {
     if (account != null) {
+      await createUserInFirestore();
       setState(() {
         isAuth = true;
       });
-      createUserInFirestore();
     } else {
       setState(() {
         isAuth = false;

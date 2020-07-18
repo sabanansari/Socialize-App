@@ -114,8 +114,12 @@ class _TimelineState extends State<Timeline> {
                   ],
                 ),
               ),
-              Column(
-                children: userResults,
+              Expanded(
+                child: Column(
+                  children: userResults.isEmpty
+                      ? Text('No User to Suggest')
+                      : userResults,
+                ),
               ),
             ],
           ),
