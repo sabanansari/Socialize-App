@@ -157,7 +157,7 @@ class _HomeState extends State<Home> {
     if (Platform.isIOS) getiOSPermission();
 
     _firebaseMessaging.getToken().then((token) {
-      print('Firebase Messaging Token: $token \n');
+      print('Firebase Messaging Token: $token\n');
       usersRef
           .document(user.id)
           .updateData({'androidNotificationToken': token});
